@@ -1,4 +1,4 @@
-get_E <- function(M, e) {
+get.E <- function(M, e) {
     # Most appropiate initial guesses Esmaelzadeh & Ghadiri 2014
     if (M >= 0 & M <= 0.25) {
         E0 <- M + ((6 * M) ** (1. / 3.) - M) * e
@@ -23,9 +23,9 @@ get_E <- function(M, e) {
     return(E1)
 }
 
-v_get_E <- Vectorize(get_E)
+v.get.E <- Vectorize(get.E)
 
-fit_pd_e <- function(t, t0, p, i, e, o, p_max) {
+fit.pd.e <- function(t, t0, p, i, e, o, p.max) {
     # Harries & Howarth 2000
     o <- o * pi / 180.0
     i <- i * pi / 180.0
@@ -33,13 +33,13 @@ fit_pd_e <- function(t, t0, p, i, e, o, p_max) {
     M <- (2.0 * pi / p) * (t - t0)
     M <- M %% (2 * pi)
 
-    E <- v_get_E(M, e)
+    E <- v.get.E(M, e)
     E <- E %% ( 2 * pi)
 
-    cos_nu <- (cos(E) - e) / (1 - e * cos(E))
-    sin_nu <- (sin(E) * sqrt(1 - e ** 2)) / (1 - e * cos(E))
+    cos.nu <- (cos(E) - e) / (1 - e * cos(E))
+    sin.nu <- (sin(E) * sqrt(1 - e ** 2)) / (1 - e * cos(E))
 
-    sin_o_nu <- sin(o) * cos_nu + sin_nu * cos(o)
+    sin.o.nu <- sin(o) * cos.nu + sin.nu * cos(o)
 
-    return(p_max * (1.0 - (sin(i) ** 2) * (sin_o_nu ** 2)))
+    return(p.max * (1.0 - (sin(i) ** 2) * (sin.o.nu ** 2)))
 }
